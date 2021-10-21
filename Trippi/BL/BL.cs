@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DL;
 using DecimalMath; //https://github.com/nathanpjones/DecimalMath
 //using System.Collections.Generic;
+using System.Net.Http;
 
 using Models;
 
@@ -14,12 +15,33 @@ namespace TrippiBL
 
 
     {
+        private static readonly HttpClient client = new HttpClient();
+        //work in progress
+        // responseString is a json as a string with lots of info around places of interest
+        public static async Task GetPOI(decimal latitude, decimal longitude, int radius)
+        {
+            System.Console.WriteLine("start of getpoi");
+            var values = new Dictionary<string, string>
+            {
+                { "location", latitude + "," + longitude },
+                { "radius", $"{radius}" },
+                {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
+            };
+            System.Console.WriteLine("dictionary made");
+            var content = new FormUrlEncodedContent(values);
+            content = null;
+            System.Console.WriteLine("content made");
+            System.Console.WriteLine(content);
+            var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            System.Console.WriteLine("post sent");
+            var responseString = await response.Content.ReadAsStringAsync();
+            //return responseString;
+            //System.Console.WriteLine(responseString);
+            System.Console.WriteLine("end of getpoi");
+        }
 
-        //private readonly IRepo _repo;
-        //public BL(IRepo repo)
-        //    {
-        //    _repo = repo;
-        //    }
+        
+       
 
 
         public List<decimal> GetW(decimal latitude, decimal longitude, int distance)
