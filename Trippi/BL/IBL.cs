@@ -9,13 +9,10 @@ namespace TrippiBL
     {
     public interface IBL
     {
-<<<<<<< HEAD
-        Task<User> AddUserAsync(User user);
         Task<User> GetOneUserByIdAsync(int id);
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
         Task DeleteUserAsync(int id);
-=======
 
 
         /// <summary>
@@ -37,7 +34,5 @@ namespace TrippiBL
         Task<Rating> CreateRatingAsync(Rating rating);
         Task DeleteRatingAsync(int id);
         Task<List<Rating>> GetAllRatingsAsync();
-
->>>>>>> 31bfb99f55187c88db34fdb29d9236971921ab6f
     }
 }

@@ -3,13 +3,10 @@ using System.Threading.Tasks;
 using Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
-=======
->>>>>>> 31bfb99f55187c88db34fdb29d9236971921ab6f
 
 namespace DL
-    {
+{
     public class Repo : IRepo
     {
         private DBContext _context;
@@ -27,8 +24,6 @@ namespace DL
 
             return user;
         }
-
-<<<<<<< HEAD
         public async Task<User> GetOneUserByIdAsync(int id)
         {
             return await _context.Users
@@ -65,7 +60,11 @@ namespace DL
         public async Task<Friends> AddFriendAsync(Friends friend)
         {
             await _context.AddAsync(friend);
-=======
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+            return friend;
+        }
+
         public async Task<Trip> CreateTripAsync(Trip trip)
         {
             await _context.AddAsync(trip);
@@ -102,14 +101,12 @@ namespace DL
         public async Task<Rating> CreateRatingAsync(Rating rating)
         {
             await _context.AddAsync(rating);
->>>>>>> 31bfb99f55187c88db34fdb29d9236971921ab6f
 
             await _context.SaveChangesAsync();
 
             _context.ChangeTracker.Clear();
 
-<<<<<<< HEAD
-            return friend;
+            return rating;
         }
 
         public async Task DeleteUserAsync(int id)
@@ -117,10 +114,6 @@ namespace DL
             _context.Users.Remove(await GetOneUserByIdAsync(id));
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
-        }
-        
-=======
-            return rating;
         }
 
         public async Task DeleteRatingAsync(int id)
@@ -134,6 +127,5 @@ namespace DL
         {
             return await _context.Ratings.ToListAsync();
         }
->>>>>>> 31bfb99f55187c88db34fdb29d9236971921ab6f
     }
 }
