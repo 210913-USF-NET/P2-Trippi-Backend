@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
 =======
 >>>>>>> 31bfb99f55187c88db34fdb29d9236971921ab6f
