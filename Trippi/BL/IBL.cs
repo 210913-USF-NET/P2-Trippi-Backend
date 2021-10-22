@@ -24,9 +24,11 @@ namespace TrippiBL
         /// <returns></returns>
         List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
 
-        Task<object> GetPOI(decimal latitude, decimal longitude, int radius);
+        Task<string> GetPOI(decimal latitude, decimal longitude, int radius);
 
-        Task<List<string>> AddressToLatLong(string address);
+        Task<List<decimal>> AddressToLatLong(string address);
+
+        Task<List<string>> AddressToNSEWToPOI(string address, int days, int hours);
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);
         Task<Trip> GetTripAsync(int id);
