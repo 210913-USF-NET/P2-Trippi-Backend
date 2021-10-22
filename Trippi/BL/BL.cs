@@ -169,7 +169,7 @@ namespace TrippiBL
             
             List<decimal> South = new List<decimal>(){latitude - (decimal)(dd / 111), longitude};
 
-            List<decimal> East = GetW(latitude, longitude, distance);
+            List<decimal> East = GetE(latitude, longitude, distance);
 
             List<decimal> West = GetW(latitude, longitude, distance);
 
