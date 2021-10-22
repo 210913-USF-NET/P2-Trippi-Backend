@@ -40,42 +40,70 @@ namespace TrippiBL
             var responseString = await response.Content.ReadAsStringAsync();
             dynamic a = JObject.Parse(responseString);
             var POI = "";
+            var POI2 = "";
             if (a.results.Count > 0)
             {
                 POI = a.results[0].place_id.ToString();
+                 
+            var response2 = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=address_component&place_id={POI}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            var responseString2 = await response2.Content.ReadAsStringAsync();
+            dynamic b = JObject.Parse(responseString2);
+            POI2 = "";
+            for(int i = 0; i < b.result.address_components.Count; i++)
+            {
+            POI2 =POI2 + b.result.address_components[i].short_name.ToString();
+            if(i < b.result.address_components.Count - 1)
+            {
+                POI2 = POI2 + " ";
             }
-            
+            }
+            }
+           
+           
             //System.Console.WriteLine(responseString);
             System.Console.WriteLine("end of getpoi");
-            return POI;
+            return POI2;
             
             
         }
         //for testing
-            public static async Task<string> GetPOI2(decimal latitude, decimal longitude, int radius)
-        {
-            System.Console.WriteLine("start of getpoi");
-            var values = new Dictionary<string, string>
-            {
-                { "location", latitude + "," + longitude },
-                { "radius", $"{radius}" },
-                {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
-            };
-            System.Console.WriteLine("dictionary made");
-            var content = new FormUrlEncodedContent(values);
-            content = null;
-            System.Console.WriteLine("content made");
-            System.Console.WriteLine(content);
-            var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
-            System.Console.WriteLine("post sent");
-            var responseString = await response.Content.ReadAsStringAsync();
-            dynamic a = JObject.Parse(responseString);
-            var POI = a.results[0].place_id.ToString();
-            //System.Console.WriteLine(responseString);
-            System.Console.WriteLine("end of getpoi");
-            return POI;
+        //     public static async Task<string> GetPOI2(decimal latitude, decimal longitude, int radius)
+        // {
+        //     System.Console.WriteLine("start of getpoi");
+        //     var values = new Dictionary<string, string>
+        //     {
+        //         { "location", latitude + "," + longitude },
+        //         { "radius", $"{radius}" },
+        //         {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
+        //     };
+        //     System.Console.WriteLine("dictionary made");
+        //     var content = new FormUrlEncodedContent(values);
+        //     content = null;
+        //     System.Console.WriteLine("content made");
+        //     System.Console.WriteLine(content);
+        //     var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+        //     System.Console.WriteLine("post sent");
+        //     var responseString = await response.Content.ReadAsStringAsync();
+        //     dynamic a = JObject.Parse(responseString);
+        //     var POI = "";
+        //     if (a.results.Count > 0)
+        //     {
+        //         POI = a.results[0].place_id.ToString();
+        //     }
             
-        }
+        //     var response2 = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=address_component&place_id={POI}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+        //     var responseString2 = await response2.Content.ReadAsStringAsync();
+        //     dynamic b = JObject.Parse(responseString2);
+        //     var POI2 = "";
+        //     for(int i = 0; i < b.result.address_components.Count; i++)
+        //     {
+        //     POI2 =POI2 + b.result.address_components[i].short_name.ToString() + " ";
+        //     }
+        //     //System.Console.WriteLine(responseString);
+        //     System.Console.WriteLine("end of getpoi");
+        //     return POI2;
+            
+        // }
 
         public async Task<List<decimal>> AddressToLatLong(string address)
         {
