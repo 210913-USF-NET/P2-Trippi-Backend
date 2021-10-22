@@ -32,9 +32,9 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Get(string address, int hours, int days)
         {
             int distance = _bl.CalculateDistance(hours, days);
-            List<string> latlong = await _bl.AddressToLatLong(address);
-            decimal latitude = Decimal.Parse(latlong[0]);
-            decimal longitude = Decimal.Parse(latlong[1]);
+            List<decimal> latlong = await _bl.AddressToLatLong(address);
+            decimal latitude = latlong[0];
+            decimal longitude = latlong[1];
             List<List<Decimal>> NSEW = _bl.GetNSEW(latitude, longitude, distance);
             return Ok(NSEW);
         }
