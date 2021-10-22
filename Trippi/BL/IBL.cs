@@ -22,8 +22,11 @@ namespace TrippiBL
         /// <param name="longitude"></param>
         /// <param name="distance">should be in km</param>
         /// <returns></returns>
-         List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
+        List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
 
+        Task<object> GetPOI(decimal latitude, decimal longitude, int radius);
+
+        Task<List<string>> AddressToLatLong(string address);
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);
         Task<Trip> GetTripAsync(int id);
