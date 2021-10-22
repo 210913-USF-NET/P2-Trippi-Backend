@@ -37,5 +37,6 @@ namespace TrippiBL
         Task<Rating> CreateRatingAsync(Rating rating);
         Task DeleteRatingAsync(int id);
         Task<List<Rating>> GetAllRatingsAsync();
+        int CalculateDistance(int hours, int days);
     }
 }
