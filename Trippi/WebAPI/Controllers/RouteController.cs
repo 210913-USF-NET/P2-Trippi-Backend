@@ -27,6 +27,16 @@ namespace WebAPI.Controllers
             return Ok(NSEW);
         }
 
+        // GET: api/<RouteController>
+        [HttpGet("{address} {hours} {days}")]
+        public async Task<IActionResult> Get(string address, int hours, int days)
+        {
+            int distance = _bl.CalculateDistance(hours, days);
+
+            List<List<Decimal>> NSEW = _bl.GetNSEW(latitude, longitude, distance);
+            return Ok(NSEW);
+        }
+
         // GET api/<RouteController>/5
         [HttpGet("{id}")]
         public string Get(int id)

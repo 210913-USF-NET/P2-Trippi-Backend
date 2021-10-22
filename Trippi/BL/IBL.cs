@@ -22,7 +22,7 @@ namespace TrippiBL
         /// <param name="longitude"></param>
         /// <param name="distance">should be in km</param>
         /// <returns></returns>
-         List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
+        List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
 
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);
@@ -34,5 +34,6 @@ namespace TrippiBL
         Task<Rating> CreateRatingAsync(Rating rating);
         Task DeleteRatingAsync(int id);
         Task<List<Rating>> GetAllRatingsAsync();
+        int CalculateDistance(int hours, int days);
     }
 }
