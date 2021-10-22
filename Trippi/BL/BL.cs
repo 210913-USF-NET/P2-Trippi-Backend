@@ -21,7 +21,7 @@ namespace TrippiBL
         // responseString is a json as a string with lots of info around places of interest
       
 
-        public async Task<object> GetPOI(decimal latitude, decimal longitude, int radius)
+        public async Task<string> GetPOI(decimal latitude, decimal longitude, int radius)
         {
             System.Console.WriteLine("start of getpoi");
             var values = new Dictionary<string, string>
@@ -38,37 +38,44 @@ namespace TrippiBL
             var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
             System.Console.WriteLine("post sent");
             var responseString = await response.Content.ReadAsStringAsync();
+            dynamic a = JObject.Parse(responseString);
+            var POI = "";
+            if (a.results.Count > 0)
+            {
+                POI = a.results[0].place_id.ToString();
+            }
+            
             //System.Console.WriteLine(responseString);
             System.Console.WriteLine("end of getpoi");
-            return responseString;
+            return POI;
             
             
         }
         //for testing
-        //     public static async Task GetPOI2(decimal latitude, decimal longitude, int radius)
-        // {
-        //     System.Console.WriteLine("start of getpoi");
-        //     var values = new Dictionary<string, string>
-        //     {
-        //         { "location", latitude + "," + longitude },
-        //         { "radius", $"{radius}" },
-        //         {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
-        //     };
-        //     System.Console.WriteLine("dictionary made");
-        //     var content = new FormUrlEncodedContent(values);
-        //     content = null;
-        //     System.Console.WriteLine("content made");
-        //     System.Console.WriteLine(content);
-        //     var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
-        //     System.Console.WriteLine("post sent");
-        //     var responseString = await response.Content.ReadAsStringAsync();
-        //     System.Console.WriteLine(responseString);
-        //     System.Console.WriteLine("end of getpoi");
+            public static async Task<string> GetPOI2(decimal latitude, decimal longitude, int radius)
+        {
+            System.Console.WriteLine("start of getpoi");
+            var values = new Dictionary<string, string>
+            {
+                { "location", latitude + "," + longitude },
+                { "radius", $"{radius}" },
+                {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
+            };
+            System.Console.WriteLine("dictionary made");
+            var content = new FormUrlEncodedContent(values);
+            content = null;
+            System.Console.WriteLine("content made");
+            System.Console.WriteLine(content);
+            var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            System.Console.WriteLine("post sent");
+            var responseString = await response.Content.ReadAsStringAsync();
+            dynamic a = JObject.Parse(responseString);
+            var POI = a.results[0].place_id.ToString();
+            //System.Console.WriteLine(responseString);
+            System.Console.WriteLine("end of getpoi");
+            return POI;
             
-        //     // return responseString;
-            
-            
-        // }
+        }
 
         public async Task<List<decimal>> AddressToLatLong(string address)
         {
@@ -114,11 +121,30 @@ namespace TrippiBL
         //     return LatLng;
         // }
 
-        public async Task POINSEW()
+        public async Task<List<string>> AddressToNSEWToPOI(string address, int days, int hours)
         {
+            List<decimal> latlong = await AddressToLatLong(address);
 
+            //finds distance assuming an average speed of 50 kmh
+            int distanceKM = days * hours * 50;
+
+            List<List<decimal>> NSEWlatlong = GetNSEW(latlong[0], latlong[1], distanceKM);
+
+            int radius = 3000;
+            List<string> POIs = new List<string>(){
+                await GetPOI(NSEWlatlong[0][0], NSEWlatlong[0][1], radius),
+                await GetPOI(NSEWlatlong[1][0], NSEWlatlong[1][1], radius),
+                await GetPOI(NSEWlatlong[2][0], NSEWlatlong[2][1], radius),
+                await GetPOI(NSEWlatlong[3][0], NSEWlatlong[3][1], radius)
+                
+            };
+            
+           
+            System.Diagnostics.Debug.WriteLine($"poi 1 = {POIs[0]}");
+            return POIs;
         }
-       
+        
+     
 
 
         public List<decimal> GetW(decimal latitude, decimal longitude, int distance)
