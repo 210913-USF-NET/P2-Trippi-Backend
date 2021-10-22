@@ -70,7 +70,7 @@ namespace TrippiBL
             
         // }
 
-        public async Task<List<string>> AddressToLatLong(string address)
+        public async Task<List<decimal>> AddressToLatLong(string address)
         {
             var values = new Dictionary<string, string>();
             var content = new FormUrlEncodedContent(values);
@@ -84,9 +84,9 @@ namespace TrippiBL
 
             var lng = a.candidates[0].geometry.location.lng.ToString(); 
 
-            List<string> LatLng = new List<string>();
-            LatLng.Add(lat);
-            LatLng.Add(lng);
+            List<decimal> LatLng = new List<decimal>();
+            LatLng.Add(decimal.Parse(lat));
+            LatLng.Add(decimal.Parse(lng));
 
 
             return LatLng;
@@ -114,7 +114,10 @@ namespace TrippiBL
         //     return LatLng;
         // }
 
-        
+        public async Task POINSEW()
+        {
+
+        }
        
 
 
