@@ -135,7 +135,8 @@ namespace TrippiBL
                 await GetPOI(NSEWlatlong[0][0], NSEWlatlong[0][1], radius),
                 await GetPOI(NSEWlatlong[1][0], NSEWlatlong[1][1], radius),
                 await GetPOI(NSEWlatlong[2][0], NSEWlatlong[2][1], radius),
-                await GetPOI(NSEWlatlong[3][0], NSEWlatlong[3][1], radius)
+                await GetPOI(NSEWlatlong[3][0], NSEWlatlong[3][1], radius),
+                address
                 
             };
             
