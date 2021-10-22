@@ -19,10 +19,22 @@ namespace WebAPI.Controllers
             _bl = bl;
         }
 
+        //// GET: api/<RouteController>
+        //[HttpGet("{latitude} {longitude} {distance}")]
+        //public async Task<IActionResult> Get(decimal latitude, decimal longitude, int distance)
+        //{
+        //    List<List<Decimal>> NSEW = _bl.GetNSEW(latitude, longitude, distance);
+        //    return Ok(NSEW);
+        //}
+
         // GET: api/<RouteController>
-        [HttpGet("{latitude} {longitude} {distance}")]
-        public async Task<IActionResult> Get(decimal latitude, decimal longitude, int distance)
+        [HttpGet("{address} {hours} {days}")]
+        public async Task<IActionResult> Get(string address, int hours, int days)
         {
+            int distance = _bl.CalculateDistance(hours, days);
+            List<string> latlong = await _bl.AddressToLatLong(address);
+            decimal latitude = Decimal.Parse(latlong[0]);
+            decimal longitude = Decimal.Parse(latlong[1]);
             List<List<Decimal>> NSEW = _bl.GetNSEW(latitude, longitude, distance);
             return Ok(NSEW);
         }

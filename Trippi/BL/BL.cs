@@ -233,6 +233,11 @@ namespace TrippiBL
             return NSEW;
           }
 
+        public int CalculateDistance(int hours, int days)
+        {
+            return (50 * hours) * days;
+        }
+
         private readonly IRepo _repo;
         public BL(IRepo repo)
         {
