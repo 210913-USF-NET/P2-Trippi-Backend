@@ -220,7 +220,7 @@ namespace TrippiBL
         {
             List<List<decimal>> NSEW = new List<List<decimal>>();
 
-           
+            List<decimal> Start = new List<decimal>() { latitude, longitude };
 
             decimal dd = (decimal)distance;
             List<decimal> North = new List<decimal>(){latitude + (decimal)(dd / 111), longitude};
@@ -231,6 +231,7 @@ namespace TrippiBL
 
             List<decimal> West = GetW(latitude, longitude, distance);
 
+            NSEW.Add(Start);
             NSEW.Add(North);
             NSEW.Add(South);
             NSEW.Add(East);
