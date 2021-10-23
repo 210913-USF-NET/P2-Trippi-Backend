@@ -231,15 +231,16 @@ namespace TrippiBL
 
             List<decimal> West = GetW(latitude, longitude, distance);
 
-            NSEW.Add(Start);
+            
             NSEW.Add(North);
             NSEW.Add(South);
             NSEW.Add(East);
             NSEW.Add(West);
+            NSEW.Add(Start);
 
             // arranging formula from http://edwilliams.org/avform147.htm#Dist
             // d =2 * asin(sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2))
-            
+
             // d / 2 = asin(sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2))
 
             // sin(d / 2) = sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2)
@@ -258,7 +259,7 @@ namespace TrippiBL
 
             //  2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2)))) - lon1 = -lon2
 
-             //lon2 = lon1 -2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2))))
+            //lon2 = lon1 -2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2))))
 
             return NSEW;
           }
