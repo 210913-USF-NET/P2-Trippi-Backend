@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DL.Migrations
 {
-    public partial class DBRevamp : Migration
+    public partial class StatusAdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,7 @@ namespace DL.Migrations
                     ToUserId = table.Column<int>(type: "integer", nullable: false),
                     FromUserId = table.Column<int>(type: "integer", nullable: false),
                     TripId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -118,32 +119,6 @@ namespace DL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserTripHistories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    TripId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTripHistories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserTripHistories_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserTripHistories_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_UserId",
                 table: "Friends",
@@ -168,16 +143,6 @@ namespace DL.Migrations
                 name: "IX_Trips_UserId",
                 table: "Trips",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTripHistories_TripId",
-                table: "UserTripHistories",
-                column: "TripId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTripHistories_UserId",
-                table: "UserTripHistories",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -190,9 +155,6 @@ namespace DL.Migrations
 
             migrationBuilder.DropTable(
                 name: "TripInvites");
-
-            migrationBuilder.DropTable(
-                name: "UserTripHistories");
 
             migrationBuilder.DropTable(
                 name: "Trips");

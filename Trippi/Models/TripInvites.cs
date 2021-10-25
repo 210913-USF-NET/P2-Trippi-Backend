@@ -12,5 +12,6 @@ namespace Models
         public int ToUserId { get; set; }
         public int FromUserId { get; set; }
         public int TripId { get; set; }
+        public int Status { get; set; }
     }
 }

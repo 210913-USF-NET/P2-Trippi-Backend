@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DL.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20211025202622_DBRevamp")]
-    partial class DBRevamp
+    [Migration("20211025212513_StatusAdd")]
+    partial class StatusAdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -123,6 +123,9 @@ namespace DL.Migrations
                     b.Property<int>("FromUserId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ToUserId")
                         .HasColumnType("integer");
 
@@ -153,28 +156,6 @@ namespace DL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Models.UserTripHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TripId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTripHistories");
                 });
 
             modelBuilder.Entity("Models.Friends", b =>
@@ -215,25 +196,6 @@ namespace DL.Migrations
                     b.HasOne("Models.User", null)
                         .WithMany("TripInvites")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Models.UserTripHistory", b =>
-                {
-                    b.HasOne("Models.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Models.User", b =>
