@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Models
     {
     public class Trip
-        {
+    {
         public int Id { get; set; }
         public int UserId { get; set; }
         public int RatingId { get; set; }
@@ -16,5 +16,8 @@ namespace Models
         public decimal EndLat { get; set; }
         public decimal EndLong { get; set; }
         public Rating Rating { get; set; }
-        }
+        public string StartAddress { get; set; }
+        public string EndAddress { get; set; }
     }
+        
+}
