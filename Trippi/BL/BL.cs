@@ -341,5 +341,9 @@ namespace TrippiBL
             await _repo.DeleteUserAsync(id);
         }
 
-    }
+        public async Task<User> GetOneUserByUsernameAsync(string username)
+            {
+            return await _repo.GetOneUserByUsernameAsync(username);
+            }
+        }
 }

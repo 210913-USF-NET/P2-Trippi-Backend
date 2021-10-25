@@ -81,8 +81,8 @@ namespace DL.Migrations
                     b.Property<int>("RatingId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RatingId1")
-                        .HasColumnType("integer");
+                    //b.Property<int?>("RatingId1")
+                    //    .HasColumnType("integer");
 
                     b.Property<string>("StartAddress")
                         .HasColumnType("text");
@@ -167,7 +167,7 @@ namespace DL.Migrations
                 {
                     b.HasOne("Models.Rating", "Rating")
                         .WithMany()
-                        .HasForeignKey("RatingId1");
+                        .HasForeignKey("RatingId");
 
                     b.HasOne("Models.User", null)
                         .WithMany("MyTrips")

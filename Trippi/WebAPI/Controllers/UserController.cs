@@ -60,7 +60,20 @@ namespace WebAPI.Controllers
             {
                 return NoContent();
             }
-        }
+            }// GET api/<UserController>/5
+        [HttpGet("Username/{username}")]
+        public async Task<IActionResult> Get(string username)
+            {
+            User foundUser = await _bl.GetOneUserByUsernameAsync(username);
+            if (foundUser != null)
+                {
+                return Ok(foundUser);
+                }
+            else
+                {
+                return NoContent();
+                }
+            }
 
         [HttpDelete("{id}")]
         public async Task Delete(int id)
