@@ -11,6 +11,7 @@ namespace Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int RatingId { get; set; }
+
         public decimal StartLat { get; set; }
         public decimal StartLong { get; set; }
         public decimal EndLat { get; set; }

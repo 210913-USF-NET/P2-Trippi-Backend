@@ -127,5 +127,12 @@ namespace DL
         {
             return await _context.Ratings.ToListAsync();
         }
-    }
+
+        public async Task<User> GetOneUserByUsernameAsync(string username)
+            {
+            return await _context.Users.Include(r => r.MyRatings).Include(t => t.MyTrips)
+                .Include(f => f.Friends).FirstOrDefaultAsync(x => x.Username.Equals(username));
+          
+            }
+        }
 }

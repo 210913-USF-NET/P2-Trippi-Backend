@@ -10,6 +10,7 @@ namespace TrippiBL
     public interface IBL
     {
         Task<User> GetOneUserByIdAsync(int id);
+        Task<User> GetOneUserByUsernameAsync(string username);
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
         Task DeleteUserAsync(int id);
