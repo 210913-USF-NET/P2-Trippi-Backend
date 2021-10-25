@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         }
 
         // POST api/<ValuesController>
-        [HttpPost("{newTrip}")]
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody] Trip newTrip)
         {
             Trip addedTrip = await _bl.CreateTripAsync(newTrip);
