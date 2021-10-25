@@ -9,7 +9,7 @@ namespace Models
     public class Trip
     {
         public int Id { get; set; }
-        public string UserName { get; set; }
+        public string username { get; set; }
         public int RatingId { get; set; }
 
         public decimal StartLat { get; set; }
