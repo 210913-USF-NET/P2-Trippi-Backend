@@ -13,6 +13,7 @@ namespace DL
         Task<User> GetOneUserByUsernameAsync(string username);
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
+        Task<TripInvites> PostInviteAsync(TripInvites invite);
         Task DeleteUserAsync(int id);
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);

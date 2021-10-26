@@ -13,7 +13,6 @@ namespace Models
         public List<Rating> MyRatings { get; set; }
         public List<Trip> MyTrips { get; set; }
         public List<Friends> Friends { get; set; }
-
         public List<TripInvites> TripInvites { get; set; }
 
         }

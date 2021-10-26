@@ -336,14 +336,19 @@ namespace TrippiBL
             return await _repo.AddFriendAsync(friend);
         }
 
+        public async Task<TripInvites> PostInviteAsync(TripInvites invite)
+        {
+            return await _repo.PostInviteAsync(invite);
+        }
+
         public async Task DeleteUserAsync(int id)
         {
             await _repo.DeleteUserAsync(id);
         }
 
         public async Task<User> GetOneUserByUsernameAsync(string username)
-            {
-            return await _repo.GetOneUserByUsernameAsync(username);
-            }
+        {
+        return await _repo.GetOneUserByUsernameAsync(username);
         }
+    }
 }

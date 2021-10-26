@@ -13,6 +13,7 @@ namespace TrippiBL
         Task<User> GetOneUserByUsernameAsync(string username);
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
+        Task<TripInvites> PostInviteAsync(TripInvites invite);
         Task DeleteUserAsync(int id);
 
 

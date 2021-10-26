@@ -52,6 +52,15 @@ namespace DL
                                 Id = f.Id,
                                 UserId = f.UserId,
                                 FriendId = f.FriendId
+                            }).ToList(),
+                        TripInvites = user.TripInvites.Select(
+                            i => new TripInvites()
+                            { 
+                                Id = i.Id,
+                                ToUserId = i.ToUserId,
+                                FromUserId = i.FromUserId,
+                                TripId = i.TripId,
+                                Status = i.Status
                             }).ToList()
                     }
                 ).ToListAsync();
@@ -63,6 +72,15 @@ namespace DL
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
             return friend;
+        }
+
+        public async Task<TripInvites> PostInviteAsync(TripInvites invite)
+        {
+            await _context.AddAsync(invite);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            return invite;
         }
 
         public async Task<Trip> CreateTripAsync(Trip trip)
