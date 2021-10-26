@@ -10,6 +10,7 @@ namespace TrippiBL
     public interface IBL
     {
         Task<User> GetOneUserByIdAsync(int id);
+        Task<User> GetOneUserByUsernameAsync(string username);
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
         Task DeleteUserAsync(int id);
@@ -22,8 +23,13 @@ namespace TrippiBL
         /// <param name="longitude"></param>
         /// <param name="distance">should be in km</param>
         /// <returns></returns>
-         List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
+        List<List<decimal>> GetNSEW(decimal latitude, decimal longitude, int distance);
 
+        Task<string> GetPOI(decimal latitude, decimal longitude, int radius);
+
+        Task<List<decimal>> AddressToLatLong(string address);
+
+        Task<List<string>> AddressToNSEWToPOI(string address, int days, int hours);
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);
         Task<Trip> GetTripAsync(int id);
@@ -34,5 +40,6 @@ namespace TrippiBL
         Task<Rating> CreateRatingAsync(Rating rating);
         Task DeleteRatingAsync(int id);
         Task<List<Rating>> GetAllRatingsAsync();
+        int CalculateDistance(int hours, int days);
     }
 }

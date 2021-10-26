@@ -17,6 +17,6 @@ namespace Models
         [Range(1,5)]
         public int MyRating { get; set; }
         public User User { get; set; }
-        //public Trip Trip { get; set; }
+        public Trip Trip { get; set; }
         }
     }

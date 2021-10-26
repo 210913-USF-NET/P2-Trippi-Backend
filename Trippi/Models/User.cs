@@ -14,5 +14,7 @@ namespace Models
         public List<Trip> MyTrips { get; set; }
         public List<Friends> Friends { get; set; }
 
+        public List<TripInvites> TripInvites { get; set; }
+
         }
     }

@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using DL;
 using DecimalMath; //https://github.com/nathanpjones/DecimalMath
 //using System.Collections.Generic;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 using Models;
 
@@ -14,12 +16,164 @@ namespace TrippiBL
 
 
     {
+        private static readonly HttpClient client = new HttpClient();
+        //work in progress
+        // responseString is a json as a string with lots of info around places of interest
+      
 
-        //private readonly IRepo _repo;
-        //public BL(IRepo repo)
-        //    {
-        //    _repo = repo;
-        //    }
+        public async Task<string> GetPOI(decimal latitude, decimal longitude, int radius)
+        {
+            System.Console.WriteLine("start of getpoi");
+            var values = new Dictionary<string, string>
+            {
+                { "location", latitude + "," + longitude },
+                { "radius", $"{radius}" },
+                {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
+            };
+            System.Console.WriteLine("dictionary made");
+            var content = new FormUrlEncodedContent(values);
+            content = null;
+            System.Console.WriteLine("content made");
+            System.Console.WriteLine(content);
+            var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            System.Console.WriteLine("post sent");
+            var responseString = await response.Content.ReadAsStringAsync();
+            dynamic a = JObject.Parse(responseString);
+            var POI = "";
+            var POI2 = "";
+            if (a.results.Count > 0)
+            {
+                POI = a.results[0].place_id.ToString();
+                 
+            var response2 = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=address_component&place_id={POI}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            var responseString2 = await response2.Content.ReadAsStringAsync();
+            dynamic b = JObject.Parse(responseString2);
+            POI2 = "";
+            for(int i = 0; i < b.result.address_components.Count; i++)
+            {
+            POI2 =POI2 + b.result.address_components[i].short_name.ToString();
+            if(i < b.result.address_components.Count - 1)
+            {
+                POI2 = POI2 + " ";
+            }
+            }
+            }
+           
+           
+            //System.Console.WriteLine(responseString);
+            System.Console.WriteLine("end of getpoi");
+            return POI2;
+            
+            
+        }
+        //for testing
+        //     public static async Task<string> GetPOI2(decimal latitude, decimal longitude, int radius)
+        // {
+        //     System.Console.WriteLine("start of getpoi");
+        //     var values = new Dictionary<string, string>
+        //     {
+        //         { "location", latitude + "," + longitude },
+        //         { "radius", $"{radius}" },
+        //         {"key", "AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q" }
+        //     };
+        //     System.Console.WriteLine("dictionary made");
+        //     var content = new FormUrlEncodedContent(values);
+        //     content = null;
+        //     System.Console.WriteLine("content made");
+        //     System.Console.WriteLine(content);
+        //     var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={latitude},{longitude}&radius={radius}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+        //     System.Console.WriteLine("post sent");
+        //     var responseString = await response.Content.ReadAsStringAsync();
+        //     dynamic a = JObject.Parse(responseString);
+        //     var POI = "";
+        //     if (a.results.Count > 0)
+        //     {
+        //         POI = a.results[0].place_id.ToString();
+        //     }
+            
+        //     var response2 = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/details/json?fields=address_component&place_id={POI}&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+        //     var responseString2 = await response2.Content.ReadAsStringAsync();
+        //     dynamic b = JObject.Parse(responseString2);
+        //     var POI2 = "";
+        //     for(int i = 0; i < b.result.address_components.Count; i++)
+        //     {
+        //     POI2 =POI2 + b.result.address_components[i].short_name.ToString() + " ";
+        //     }
+        //     //System.Console.WriteLine(responseString);
+        //     System.Console.WriteLine("end of getpoi");
+        //     return POI2;
+            
+        // }
+
+        public async Task<List<decimal>> AddressToLatLong(string address)
+        {
+            var values = new Dictionary<string, string>();
+            var content = new FormUrlEncodedContent(values);
+            content = null; 
+            var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input={address}&inputtype=textquery&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            dynamic a = JObject.Parse(responseString);
+            // var ab = (JObject)a.candidates.ToString();
+            // dynamic b = ab;
+            var lat = a.candidates[0].geometry.location.lat.ToString();
+
+            var lng = a.candidates[0].geometry.location.lng.ToString(); 
+
+            List<decimal> LatLng = new List<decimal>();
+            LatLng.Add(decimal.Parse(lat));
+            LatLng.Add(decimal.Parse(lng));
+
+
+            return LatLng;
+        }
+        // for testing
+        // public static async Task<List<string>> AddressToLatLong2(string address)
+        // {
+        //     var values = new Dictionary<string, string>();
+        //     var content = new FormUrlEncodedContent(values);
+        //     content = null; 
+        //     var response = await client.PostAsync($"https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=geometry&input={address}&inputtype=textquery&key=AIzaSyBfWV3EJ7sHOGY3aCELgAQ4NLC2FUJel_Q", content);
+        //     var responseString = await response.Content.ReadAsStringAsync();
+        //     dynamic a = JObject.Parse(responseString);
+        //     // var ab = (JObject)a.candidates.ToString();
+        //     // dynamic b = ab;
+        //     var lat = a.candidates[0].geometry.location.lat.ToString();
+
+        //     var lng = a.candidates[0].geometry.location.lng.ToString(); 
+
+        //     List<string> LatLng = new List<string>();
+        //     LatLng.Add(lat);
+        //     LatLng.Add(lng);
+
+
+        //     return LatLng;
+        // }
+
+        public async Task<List<string>> AddressToNSEWToPOI(string address, int days, int hours)
+        {
+            List<decimal> latlong = await AddressToLatLong(address);
+
+            //finds distance assuming an average speed of 50 kmh
+            int distanceKM = days * hours * 50;
+
+            List<List<decimal>> NSEWlatlong = GetNSEW(latlong[0], latlong[1], distanceKM);
+
+            int radius = 3000;
+            List<string> POIs = new List<string>(){
+                await GetPOI(NSEWlatlong[0][0], NSEWlatlong[0][1], radius),
+                await GetPOI(NSEWlatlong[1][0], NSEWlatlong[1][1], radius),
+                await GetPOI(NSEWlatlong[2][0], NSEWlatlong[2][1], radius),
+                await GetPOI(NSEWlatlong[3][0], NSEWlatlong[3][1], radius),
+                address
+                
+            };
+            
+           
+            System.Diagnostics.Debug.WriteLine($"poi 1 = {POIs[0]}");
+            return POIs;
+        }
+        
+     
 
 
         public List<decimal> GetW(decimal latitude, decimal longitude, int distance)
@@ -66,25 +220,27 @@ namespace TrippiBL
         {
             List<List<decimal>> NSEW = new List<List<decimal>>();
 
-           
+            List<decimal> Start = new List<decimal>() { latitude, longitude };
 
             decimal dd = (decimal)distance;
             List<decimal> North = new List<decimal>(){latitude + (decimal)(dd / 111), longitude};
             
             List<decimal> South = new List<decimal>(){latitude - (decimal)(dd / 111), longitude};
 
-            List<decimal> East = GetW(latitude, longitude, distance);
+            List<decimal> East = GetE(latitude, longitude, distance);
 
             List<decimal> West = GetW(latitude, longitude, distance);
 
+            
             NSEW.Add(North);
             NSEW.Add(South);
             NSEW.Add(East);
             NSEW.Add(West);
+            NSEW.Add(Start);
 
             // arranging formula from http://edwilliams.org/avform147.htm#Dist
             // d =2 * asin(sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2))
-            
+
             // d / 2 = asin(sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2))
 
             // sin(d / 2) = sqrt((sin((lat1 - lat2) / 2))^2 + cos(lat1) * cos(lat2) * (sin((lon1 - lon2) / 2))^2)
@@ -103,10 +259,15 @@ namespace TrippiBL
 
             //  2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2)))) - lon1 = -lon2
 
-             //lon2 = lon1 -2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2))))
+            //lon2 = lon1 -2 * asin(sqrt(((sin(d / 2))^2 - (sin((lat1 - lat2) / 2))^2) / (cos(lat1) * cos(lat2))))
 
             return NSEW;
           }
+
+        public int CalculateDistance(int hours, int days)
+        {
+            return (50 * hours) * days;
+        }
 
         private readonly IRepo _repo;
         public BL(IRepo repo)
@@ -180,5 +341,9 @@ namespace TrippiBL
             await _repo.DeleteUserAsync(id);
         }
 
-    }
+        public async Task<User> GetOneUserByUsernameAsync(string username)
+            {
+            return await _repo.GetOneUserByUsernameAsync(username);
+            }
+        }
 }

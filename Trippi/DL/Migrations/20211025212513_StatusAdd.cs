@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DL.Migrations
 {
-    public partial class initial : Migration
+    public partial class StatusAdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,24 +41,26 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ratings",
+                name: "TripInvites",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    ToUserId = table.Column<int>(type: "integer", nullable: false),
+                    FromUserId = table.Column<int>(type: "integer", nullable: false),
                     TripId = table.Column<int>(type: "integer", nullable: false),
-                    MyRating = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.PrimaryKey("PK_TripInvites", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ratings_Users_UserId",
+                        name: "FK_TripInvites_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,23 +69,20 @@ namespace DL.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    username = table.Column<string>(type: "text", nullable: true),
                     RatingId = table.Column<int>(type: "integer", nullable: false),
                     StartLat = table.Column<decimal>(type: "numeric", nullable: false),
                     StartLong = table.Column<decimal>(type: "numeric", nullable: false),
                     EndLat = table.Column<decimal>(type: "numeric", nullable: false),
                     EndLong = table.Column<decimal>(type: "numeric", nullable: false),
-                    RatingId1 = table.Column<int>(type: "integer", nullable: true),
+                    StartAddress = table.Column<string>(type: "text", nullable: true),
+                    EndAddress = table.Column<string>(type: "text", nullable: true),
+                    RatingId1 = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Trips_Ratings_RatingId1",
-                        column: x => x.RatingId1,
-                        principalTable: "Ratings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Trips_Users_UserId",
                         column: x => x.UserId,
@@ -93,25 +92,27 @@ namespace DL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTripHistories",
+                name: "Ratings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    TripId = table.Column<int>(type: "integer", nullable: false)
+                    TripId = table.Column<int>(type: "integer", nullable: false),
+                    MyRating = table.Column<int>(type: "integer", nullable: false),
+                    TripId1 = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTripHistories", x => x.Id);
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTripHistories_Trips_TripId",
-                        column: x => x.TripId,
+                        name: "FK_Ratings_Trips_TripId1",
+                        column: x => x.TripId1,
                         principalTable: "Trips",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserTripHistories_Users_UserId",
+                        name: "FK_Ratings_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -124,28 +125,23 @@ namespace DL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ratings_TripId1",
+                table: "Ratings",
+                column: "TripId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ratings_UserId",
                 table: "Ratings",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_RatingId1",
-                table: "Trips",
-                column: "RatingId1");
+                name: "IX_TripInvites_UserId",
+                table: "TripInvites",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trips_UserId",
                 table: "Trips",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTripHistories_TripId",
-                table: "UserTripHistories",
-                column: "TripId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTripHistories_UserId",
-                table: "UserTripHistories",
                 column: "UserId");
         }
 
@@ -155,13 +151,13 @@ namespace DL.Migrations
                 name: "Friends");
 
             migrationBuilder.DropTable(
-                name: "UserTripHistories");
+                name: "Ratings");
+
+            migrationBuilder.DropTable(
+                name: "TripInvites");
 
             migrationBuilder.DropTable(
                 name: "Trips");
-
-            migrationBuilder.DropTable(
-                name: "Ratings");
 
             migrationBuilder.DropTable(
                 name: "Users");

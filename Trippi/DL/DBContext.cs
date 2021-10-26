@@ -16,6 +16,6 @@ namespace DL
         public DbSet<User> Users { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<UserTripHistory> UserTripHistories { get; set; }
+        public DbSet<TripInvites> TripInvites { get; set; }
     }
 }

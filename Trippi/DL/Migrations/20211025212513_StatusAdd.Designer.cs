@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DL.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20211018235328_initial")]
-    partial class initial
+    [Migration("20211025212513_StatusAdd")]
+    partial class StatusAdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,10 +54,15 @@ namespace DL.Migrations
                     b.Property<int>("TripId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("TripId1")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TripId1");
 
                     b.HasIndex("UserId");
 
@@ -71,6 +76,9 @@ namespace DL.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("EndAddress")
+                        .HasColumnType("text");
+
                     b.Property<decimal>("EndLat")
                         .HasColumnType("numeric");
 
@@ -80,8 +88,11 @@ namespace DL.Migrations
                     b.Property<int>("RatingId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RatingId1")
+                    b.Property<int>("RatingId1")
                         .HasColumnType("integer");
+
+                    b.Property<string>("StartAddress")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("StartLat")
                         .HasColumnType("numeric");
@@ -92,13 +103,43 @@ namespace DL.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<string>("username")
+                        .HasColumnType("text");
 
-                    b.HasIndex("RatingId1");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Trips");
+                });
+
+            modelBuilder.Entity("Models.TripInvites", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("FromUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ToUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TripId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TripInvites");
                 });
 
             modelBuilder.Entity("Models.User", b =>
@@ -117,28 +158,6 @@ namespace DL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Models.UserTripHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TripId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTripHistories");
-                });
-
             modelBuilder.Entity("Models.Friends", b =>
                 {
                     b.HasOne("Models.User", null)
@@ -150,38 +169,12 @@ namespace DL.Migrations
 
             modelBuilder.Entity("Models.Rating", b =>
                 {
-                    b.HasOne("Models.User", "User")
-                        .WithMany("MyRatings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Models.Trip", b =>
-                {
-                    b.HasOne("Models.Rating", "Rating")
-                        .WithMany()
-                        .HasForeignKey("RatingId1");
-
-                    b.HasOne("Models.User", null)
-                        .WithMany("MyTrips")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Rating");
-                });
-
-            modelBuilder.Entity("Models.UserTripHistory", b =>
-                {
                     b.HasOne("Models.Trip", "Trip")
                         .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TripId1");
 
                     b.HasOne("Models.User", "User")
-                        .WithMany()
+                        .WithMany("MyRatings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,6 +184,20 @@ namespace DL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Models.Trip", b =>
+                {
+                    b.HasOne("Models.User", null)
+                        .WithMany("MyTrips")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Models.TripInvites", b =>
+                {
+                    b.HasOne("Models.User", null)
+                        .WithMany("TripInvites")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Models.User", b =>
                 {
                     b.Navigation("Friends");
@@ -198,6 +205,8 @@ namespace DL.Migrations
                     b.Navigation("MyRatings");
 
                     b.Navigation("MyTrips");
+
+                    b.Navigation("TripInvites");
                 });
 #pragma warning restore 612, 618
         }
