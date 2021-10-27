@@ -31,6 +31,10 @@ namespace WebAPI
         {
 
             services.AddControllers();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddDbContext<DBContext>(options => options.UseNpgsql(Configuration.GetConnectionString("P2DB")));
             services.AddSwaggerGen(c =>
             {
