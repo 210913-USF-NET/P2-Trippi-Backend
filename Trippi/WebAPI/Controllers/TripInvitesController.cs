@@ -26,5 +26,19 @@ namespace WebAPI.Controllers
             TripInvites addedInvite = await _bl.PostInviteAsync(newInvite);
             return Created("api/[controller]", addedInvite);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            List<TripInvites> foundInvites = await _bl.GetAllTripInvitesAsync();
+            if (foundInvites.Count != 0)
+            {
+                return Ok(foundInvites);
+            }
+            else
+            {
+                return NoContent();
+            }
+        }
     }
 }

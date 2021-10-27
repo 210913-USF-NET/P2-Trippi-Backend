@@ -14,6 +14,7 @@ namespace TrippiBL
         Task<List<User>> GetAllUsersAsync();
         Task<Friends> AddFriendAsync(Friends friend);
         Task<TripInvites> PostInviteAsync(TripInvites invite);
+        Task<List<TripInvites>> GetAllTripInvitesAsync();
         Task DeleteUserAsync(int id);
 
 
@@ -36,7 +37,6 @@ namespace TrippiBL
         Task<Trip> GetTripAsync(int id);
         Task DeleteTripAsync(int id);
         Task<List<Trip>> GetAllTripsAsync();
-
         Task<Rating> GetRatingAsync(int id);
         Task<Rating> CreateRatingAsync(Rating rating);
         Task DeleteRatingAsync(int id);

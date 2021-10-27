@@ -341,6 +341,11 @@ namespace TrippiBL
             return await _repo.PostInviteAsync(invite);
         }
 
+        public async Task<List<TripInvites>> GetAllTripInvitesAsync()
+        {
+            return await _repo.GetAllTripInvitesAsync();
+        }
+
         public async Task DeleteUserAsync(int id)
         {
             await _repo.DeleteUserAsync(id);
@@ -350,5 +355,6 @@ namespace TrippiBL
         {
         return await _repo.GetOneUserByUsernameAsync(username);
         }
+
     }
 }

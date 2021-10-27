@@ -41,6 +41,7 @@ namespace DL
                 .Include("MyRatings")
                 .Include("MyTrips")
                 .Include("Friends")
+                .Include("TripInvites")
                 .Select(
                     user => new User()
                     {
@@ -52,15 +53,6 @@ namespace DL
                                 Id = f.Id,
                                 UserId = f.UserId,
                                 FriendId = f.FriendId
-                            }).ToList(),
-                        TripInvites = user.TripInvites.Select(
-                            i => new TripInvites()
-                            { 
-                                Id = i.Id,
-                                ToUserId = i.ToUserId,
-                                FromUserId = i.FromUserId,
-                                TripId = i.TripId,
-                                Status = i.Status
                             }).ToList()
                     }
                 ).ToListAsync();
@@ -81,6 +73,21 @@ namespace DL
             _context.ChangeTracker.Clear();
 
             return invite;
+        }
+
+        public async Task<List<TripInvites>> GetAllTripInvitesAsync()
+        {
+
+            return await _context.TripInvites
+                .Select(
+                    invites => new TripInvites()
+                    {
+                        Id = invites.Id,
+                        FromUserId = invites.FromUserId,
+                        ToUserId = invites.ToUserId,
+                        TripId = invites.TripId
+                    }
+                ).ToListAsync();
         }
 
         public async Task<Trip> CreateTripAsync(Trip trip)
