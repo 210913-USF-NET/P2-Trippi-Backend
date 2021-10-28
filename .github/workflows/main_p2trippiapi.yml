@@ -50,7 +50,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Restore
-        run: dotnet restore 
+        run: dotnet restore ${{ env.WORKING_DIRECTORY }}
   #    - name: Test
    #     run: dotnet test --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
