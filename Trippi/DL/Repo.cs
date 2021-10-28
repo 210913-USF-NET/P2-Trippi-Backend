@@ -85,7 +85,8 @@ namespace DL
                         Id = invites.Id,
                         FromUserId = invites.FromUserId,
                         ToUserId = invites.ToUserId,
-                        TripId = invites.TripId
+                        TripId = invites.TripId,
+                        Status = invites.Status
                     }
                 ).ToListAsync();
         }
