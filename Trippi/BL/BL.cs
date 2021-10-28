@@ -275,6 +275,8 @@ namespace TrippiBL
             _repo = repo;
         }
 
+        public BL(){}
+
         public async Task<User> CreateUserAsync(User user)
         {
             return await _repo.CreateUserAsync(user);
