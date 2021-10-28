@@ -80,7 +80,7 @@ namespace BE.Tests
             Assert.IsType<OkObjectResult>(result);
             }
         [Fact]
-        public async Task PostFreindrShouldReturnCreated()
+        public async Task PostFreindrShouldReturnCreatedFriend()
             {
             Friends mockUser = new Friends()
                 {
@@ -98,10 +98,11 @@ namespace BE.Tests
             var actualResult = result.Value;
             Assert.IsType<CreatedResult>(result);
             Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
-           
+            Assert.Equal(mockUser, actualResult);
+
             }
         [Fact]
-        public async Task POIGetShuldRetrunPOIOkcode()
+        public async Task POIGetShuldReturnPOI()
             {
             List<string> mockPOI = new List<string>()
                 {
@@ -156,6 +157,231 @@ namespace BE.Tests
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
             Assert.Equal(2, mockRating.Count());
+            }
+        [Fact]
+        public async Task PostRatingShouldReturnCreatedRating()
+            {
+            Rating mockRating = new Rating()
+                {
+                Id = 2,
+                UserId = 40,
+                TripId = 21,
+                MyRating = 5
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.CreateRatingAsync(mockRating)).ReturnsAsync(mockRating);
+
+
+            RatingController service = new RatingController(mockBL.Object);
+            var result = await service.Post(mockRating) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<CreatedResult>(result);
+            Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockRating, actualResult);
+
+            }
+        [Fact]
+        public async Task GetRatingShouldReturnRating()
+            {
+            Rating mockRating = new Rating()
+                {
+                Id = 2,
+                UserId = 40,
+                TripId = 21,
+                MyRating = 5
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetRatingAsync(mockRating.Id)).ReturnsAsync(mockRating);
+
+
+            RatingController service = new RatingController(mockBL.Object);
+            var result = await service.Get(mockRating.Id) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(2, mockRating.Id );
+
+            }
+        [Fact]
+        public async Task GetTripsShouldReturnListofTrips()
+            {
+            List<Trip> mockTrip = new List<Trip>()
+                    {
+                    new Trip()
+                        {
+                        Id = 1,
+                        username = "Larry",
+                        RatingId = 4,
+                        StartAddress = "5595 Grand Dr, St Louis, MO 63112",
+                        EndAddress = "2020 S W East Dr",
+                        StartLat = 0.420453866M,
+                        StartLong = -0.7143223232M,
+                        EndLat = 0.4204538662M,
+                        EndLong= -0.8356078468263034M,
+
+                        },
+                     new Trip()
+                        {
+                         Id = 4,
+                        username = "Bob",
+                        RatingId = 9,
+                        StartAddress = "1234 Main St",
+                        EndAddress = "19 Orange St W",
+                        StartLat = 0.820453866M,
+                        StartLong = -0.7143223232M,
+                        EndLat = 0.8204538662M,
+                        EndLong= -0.8356078468263034M,
+                        }
+                    };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetAllTripsAsync()).ReturnsAsync(mockTrip);
+
+
+            TripController service = new TripController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(2, mockTrip.Count());
+            }
+        [Fact]
+        public async Task GetTripsbyIdShouldReturnTrip()
+            {
+            Trip mockTrip = new  Trip()
+                        {
+                        Id = 1,
+                        username = "Larry",
+                        RatingId = 4,
+                        StartAddress = "5595 Grand Dr, St Louis, MO 63112",
+                        EndAddress = "2020 S W East Dr",
+                        StartLat = 0.420453866M,
+                        StartLong = -0.7143223232M,
+                        EndLat = 0.4204538662M,
+                        EndLong= -0.8356078468263034M,
+
+                        };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetTripAsync(1)).ReturnsAsync(mockTrip);
+
+
+            TripController service = new TripController(mockBL.Object);
+            var result = await service.Get(1) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(1, mockTrip.Id);
+            Assert.Equal("Larry", mockTrip.username);
+            }
+        [Fact]
+        public async Task PostTripShouldReturnCreatedTrip()
+            {
+            Trip mockTrip = new Trip()
+                {
+                Id = 1,
+                username = "Larry",
+                RatingId = 4,
+                StartAddress = "5595 Grand Dr, St Louis, MO 63112",
+                EndAddress = "2020 S W East Dr",
+                StartLat = 0.420453866M,
+                StartLong = -0.7143223232M,
+                EndLat = 0.4204538662M,
+                EndLong = -0.8356078468263034M,
+
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.CreateTripAsync(mockTrip)).ReturnsAsync(mockTrip);
+
+
+            TripController service = new TripController(mockBL.Object);
+            var result = await service.Post(mockTrip) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<CreatedResult>(result);
+            Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockTrip, actualResult);
+
+            }
+        [Fact]
+        public async Task PostTripInvitedShouldReturnCreatedTripInvite()
+            {
+            TripInvites mockTrip = new TripInvites()
+                {
+                Id = 1,
+                ToUserId = 4,
+                FromUserId = 8,
+                TripId = 4,
+                Status = 1
+
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.PostInviteAsync(mockTrip)).ReturnsAsync(mockTrip);
+
+
+            TripInvitesController service = new TripInvitesController(mockBL.Object);
+            var result = await service.Post(mockTrip) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<CreatedResult>(result);
+            Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockTrip, actualResult);
+
+            }
+        [Fact]
+        public async Task GetTripInvitesShouldReturnListofTripInvites()
+            {
+            List<TripInvites> mockTrip = new List<TripInvites>()
+                    {
+                    new TripInvites()
+                        {
+                        Id = 1,
+                        ToUserId = 4,
+                        FromUserId = 8,
+                        TripId = 4,
+                        Status = 1
+
+                        },
+                     new TripInvites()
+                        {
+                        Id = 9,
+                        ToUserId = 8,
+                        FromUserId = 19,
+                        TripId = 7,
+                        Status = 0
+
+                        }
+                    };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetAllTripInvitesAsync()).ReturnsAsync(mockTrip);
+
+
+            TripInvitesController service = new TripInvitesController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(2, mockTrip.Count());
+            }
+        [Fact]
+        public async Task PutTripInvitedShouldReturnOkTripInvite()
+            {
+            TripInvites mockTrip = new TripInvites()
+                {
+                Id = 1,
+                ToUserId = 4,
+                FromUserId = 8,
+                TripId = 4,
+                Status = 1
+
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.UpdateTripInviteAsync(mockTrip)).ReturnsAsync(mockTrip);
+
+
+            TripInvitesController service = new TripInvitesController(mockBL.Object);
+            var result = await service.Put(mockTrip) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockTrip, actualResult);
+
             }
         }
     }
