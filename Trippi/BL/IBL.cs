@@ -15,6 +15,7 @@ namespace TrippiBL
         Task<Friends> AddFriendAsync(Friends friend);
         Task<TripInvites> PostInviteAsync(TripInvites invite);
         Task<List<TripInvites>> GetAllTripInvitesAsync();
+        Task<TripInvites> UpdateTripInviteAsync(TripInvites invite);
         Task DeleteUserAsync(int id);
 
 

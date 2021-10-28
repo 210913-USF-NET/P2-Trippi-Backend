@@ -346,6 +346,11 @@ namespace TrippiBL
             return await _repo.GetAllTripInvitesAsync();
         }
 
+        public async Task<TripInvites> UpdateTripInviteAsync(TripInvites invite)
+        {
+            return await _repo.UpdateTripInviteAsync(invite);
+        }
+
         public async Task DeleteUserAsync(int id)
         {
             await _repo.DeleteUserAsync(id);

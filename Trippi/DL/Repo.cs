@@ -90,6 +90,22 @@ namespace DL
                 ).ToListAsync();
         }
 
+        public async Task<TripInvites> UpdateTripInviteAsync(TripInvites invite)
+        {
+
+            _context.TripInvites.Update(invite);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            return new TripInvites()
+            {
+                Id = invite.Id,
+                FromUserId = invite.FromUserId,
+                ToUserId = invite.ToUserId,
+                TripId = invite.TripId
+            };
+        }
+
         public async Task<Trip> CreateTripAsync(Trip trip)
         {
             await _context.AddAsync(trip);
