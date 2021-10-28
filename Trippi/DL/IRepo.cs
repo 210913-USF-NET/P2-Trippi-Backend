@@ -15,6 +15,7 @@ namespace DL
         Task<Friends> AddFriendAsync(Friends friend);
         Task<TripInvites> PostInviteAsync(TripInvites invite);
         Task<List<TripInvites>> GetAllTripInvitesAsync();
+        Task<TripInvites> UpdateTripInviteAsync(TripInvites invite);
         Task DeleteUserAsync(int id);
         Task<User> CreateUserAsync(User user);
         Task<Trip> CreateTripAsync(Trip trip);

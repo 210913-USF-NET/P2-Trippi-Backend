@@ -40,5 +40,14 @@ namespace WebAPI.Controllers
                 return NoContent();
             }
         }
+
+        // PUT api/<TripInvitesController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromBody] TripInvites invite)
+        {
+            //Shrek 5ever
+            TripInvites updatedInvite = await _bl.UpdateTripInviteAsync(invite);
+            return Ok(updatedInvite);
+        }
     }
 }
