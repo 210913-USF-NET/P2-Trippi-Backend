@@ -32,6 +32,8 @@
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\DL\DL.csproj" />
     <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\BL\TrippiBL.csproj" />
+
   </ItemGroup>
 
 </Project>
